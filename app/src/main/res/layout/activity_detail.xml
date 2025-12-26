@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- COVER -->
+            <ImageView
+                android:id="@+id/imgCover"
+                android:layout_width="match_parent"
+                android:layout_height="340dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"/>
+
+            <!-- CONTENT -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- TITLE -->
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:text="EDUKASI atau SENSASI?"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <!-- AUTHOR -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_launcher_foreground"
+                        android:scaleType="centerCrop"/>
+
+                    <TextView
+                        android:text=" Anomalee22"
+                        android:textColor="#777"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!-- STATS -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="👁 326 Dibaca"
+                        android:layout_weight="1"
+                        android:textColor="#555"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="⭐ 54 Vote"
+                        android:layout_weight="1"
+                        android:textColor="#555"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="📄 1 Bab"
+                        android:layout_weight="1"
+                        android:textColor="#555"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!-- BUTTON -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnRead"
+                        android:text="📖 Baca"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="@android:color/black"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"/>
+
+                    <Button
+                        android:id="@+id/btnLibrary"
+                        android:text="+ Perpustakaan"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"/>
+                </LinearLayout>
+
+                <!-- TAG -->
+                <TextView
+                    android:text="Lengkap"
+                    android:textColor="@android:color/white"
+                    android:background="#009688"
+                    android:padding="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <!-- DESCRIPTION -->
+                <TextView
+                    android:text="Keadaan televisi jaman sekarang. Hasil dari baca di opera yang menurut saya penting untuk dibagikan..."
+                    android:layout_marginTop="12dp"
+                    android:textColor="#333"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="Baca selengkapnya"
+                    android:textColor="#673AB7"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
