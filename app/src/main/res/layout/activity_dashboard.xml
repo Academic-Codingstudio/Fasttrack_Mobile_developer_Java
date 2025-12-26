@@ -18,14 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- HEADER -->
             <LinearLayout
+                android:id="@+id/headerRoot"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tvHeaderTitle"
                     android:text="Pilihan terbaik untukmu"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -34,13 +33,13 @@
                     android:layout_height="wrap_content"/>
 
                 <Button
-                    android:text="⚡ Coba Premium"
+                    android:id="@+id/btnHeaderAction"
+                    android:text="Login"
                     android:backgroundTint="#EDE7F6"
                     android:textColor="#673AB7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-
             <!-- SECTION 1 -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvBest"

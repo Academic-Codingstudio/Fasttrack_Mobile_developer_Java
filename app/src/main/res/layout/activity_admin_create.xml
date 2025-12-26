@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- JUDUL -->
+        <EditText
+            android:id="@+id/etTitle"
+            android:hint="Judul Cerita"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- PENULIS -->
+        <EditText
+            android:id="@+id/etAuthor"
+            android:hint="Nama Penulis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
+        <!-- KATEGORI -->
+        <Spinner
+            android:id="@+id/spCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
+        <!-- DESKRIPSI -->
+        <EditText
+            android:id="@+id/etDescription"
+            android:hint="Deskripsi Singkat"
+            android:minLines="4"
+            android:gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
+        <!-- STATUS -->
+        <RadioGroup
+            android:id="@+id/rgStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <RadioButton
+                android:id="@+id/rbDraft"
+                android:text="Draft"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"/>
+
+            <RadioButton
+                android:id="@+id/rbPublish"
+                android:text="Publish"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"/>
+        </RadioGroup>
+
+        <!-- BUTTON -->
+        <Button
+            android:id="@+id/btnSave"
+            android:text="Simpan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"/>
+
+    </LinearLayout>
+</ScrollView>
