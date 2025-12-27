@@ -1,6 +1,9 @@
 package com.codingstudio.bookcatalog.asset;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.codingstudio.bookcatalog.CreateBookActivity;
+import com.codingstudio.bookcatalog.DetailActivity;
 import com.codingstudio.bookcatalog.R;
 import com.codingstudio.bookcatalog.model.WriterBook;
 
@@ -49,9 +54,12 @@ public class WriterStoryAdapter
         );
 
         holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(context,
-                    book.published ? "Edit Buku" : "Lanjutkan Draft",
-                    Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("is_writer", true);
+            intent.putExtra("status", book.published ? "published" : "draft");
+
+            context.startActivity(intent);
         });
     }
 

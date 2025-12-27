@@ -41,8 +41,11 @@ public class WriterDashboardFragment extends Fragment {
 
         rv.setAdapter(new WriterStoryAdapter(getContext(), books));
 
-        fab.setOnClickListener(v ->
-                startActivity(new Intent(getActivity(), CreateBookActivity.class))
-        );
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CreateBookActivity.class);
+            intent.putExtra(CreateBookActivity.MODE, CreateBookActivity.MODE_CREATE);
+            startActivity(intent);
+        });
+
     }
 }

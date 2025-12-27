@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,10 +15,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class CreateBookActivity extends AppCompatActivity {
+    public static final String MODE = "mode";
+    public static final String MODE_CREATE = "create";
+    public static final String MODE_EDIT = "edit";
+
+    public static final String STATUS = "status";
+    public static final String STATUS_DRAFT = "draft";
+    public static final String STATUS_PUBLISHED = "published";
 
     ImageView imgCover;
     EditText etTitle, etAuthor, etCategory, etDescription;
-    Button btnPickImage, btnPublish;
+    Button btnPickImage, btnSaveDraft, btnPublish;
+
+
+    boolean isEditMode = false;
+    String bookStatus = STATUS_DRAFT;
 
     static final int REQ_GALLERY = 1;
     static final int REQ_CAMERA = 2;
@@ -33,10 +45,43 @@ public class CreateBookActivity extends AppCompatActivity {
         etCategory = findViewById(R.id.etCategory);
         etDescription = findViewById(R.id.etDescription);
         btnPickImage = findViewById(R.id.btnPickImage);
+        btnSaveDraft = findViewById(R.id.btnSaveDraft);
         btnPublish = findViewById(R.id.btnPublish);
+        String mode = getIntent().getStringExtra(MODE);
+        isEditMode = MODE_EDIT.equals(mode);
+        bookStatus = STATUS_DRAFT;
+
+        if (isEditMode) {
+            setTitle("Edit Buku");
+
+            // EDIT MODE
+            btnSaveDraft.setVisibility(View.GONE);
+            btnPublish.setVisibility(View.VISIBLE);
+            btnPublish.setText("Update / Publish");
+
+            loadBookData();
+        } else {
+            setTitle("Buat Buku Baru");
+
+            // CREATE MODE
+            btnSaveDraft.setVisibility(View.VISIBLE);
+            btnPublish.setVisibility(View.GONE);
+        }
+
+
 
         btnPickImage.setOnClickListener(v -> showImagePicker());
         btnPublish.setOnClickListener(v -> publishBook());
+
+    }
+
+    private void loadBookData() {
+        // DUMMY DATA (nanti ganti dari API / DB)
+        etTitle.setText("EDUKASI atau SENSASI?");
+        etAuthor.setText("Anomalee22");
+        etCategory.setText("Roman");
+        etDescription.setText("Keadaan televisi zaman sekarang...");
+        imgCover.setImageResource(R.drawable.ic_launcher_background);
     }
 
     private void showImagePicker() {
@@ -83,7 +128,18 @@ public class CreateBookActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this, "Buku berhasil dibuat (dummy)", Toast.LENGTH_SHORT).show();
+        if (!isEditMode) {
+            bookStatus = STATUS_DRAFT;
+            Toast.makeText(this, "Draft buku disimpan", Toast.LENGTH_SHORT).show();
+        } else {
+            if (bookStatus.equals(STATUS_DRAFT)) {
+                Toast.makeText(this, "Draft buku diperbarui", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Buku berhasil diperbarui", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         finish();
     }
+
 }

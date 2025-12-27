@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="340dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"/>
+                android:src="@drawable/ic_launcher_background" />
 
             <!-- CONTENT -->
             <LinearLayout
@@ -38,7 +38,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <!-- AUTHOR -->
                 <LinearLayout
@@ -52,15 +52,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/ic_launcher_foreground"
-                        android:scaleType="centerCrop"/>
+                        android:scaleType="centerCrop" />
 
                     <TextView
+                        android:id="@+id/txtAuthor"
                         android:text=" Anomalee22"
                         android:textColor="#777"
                         android:textSize="14sp"
                         android:layout_marginStart="8dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <!-- STATS -->
@@ -71,29 +72,33 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/txtReadCount"
                         android:text="👁 326 Dibaca"
                         android:layout_weight="1"
                         android:textColor="#555"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/txtVoteCount"
                         android:text="⭐ 54 Vote"
                         android:layout_weight="1"
                         android:textColor="#555"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/txtChapterCount"
                         android:text="📄 1 Bab"
                         android:layout_weight="1"
                         android:textColor="#555"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <!-- BUTTON -->
+                <!-- READER ACTION -->
                 <LinearLayout
+                    android:id="@+id/layoutReaderAction"
                     android:orientation="horizontal"
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
@@ -106,7 +111,7 @@
                         android:backgroundTint="@android:color/black"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"/>
+                        android:layout_height="48dp" />
 
                     <Button
                         android:id="@+id/btnLibrary"
@@ -114,38 +119,67 @@
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"/>
+                        android:layout_height="48dp" />
                 </LinearLayout>
 
                 <!-- TAG -->
                 <TextView
+                    android:id="@+id/txtStatus"
                     android:text="Lengkap"
                     android:textColor="@android:color/white"
                     android:background="#009688"
                     android:padding="8dp"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <!-- DESCRIPTION -->
                 <TextView
+                    android:id="@+id/txtDescription"
                     android:text="Keadaan televisi jaman sekarang. Hasil dari baca di opera yang menurut saya penting untuk dibagikan..."
                     android:layout_marginTop="12dp"
                     android:textColor="#333"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/txtReadMore"
                     android:text="Baca selengkapnya"
                     android:textColor="#673AB7"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
+                <!-- WRITER ACTION (HIDDEN DEFAULT) -->
+                <LinearLayout
+                    android:id="@+id/layoutWriterAction"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnEditBook"
+                        android:text="✏️ Edit Buku"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp" />
+
+                    <Button
+                        android:id="@+id/btnPublishToggle"
+                        android:text="🚀 Publish"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp" />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

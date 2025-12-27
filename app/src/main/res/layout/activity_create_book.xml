@@ -59,13 +59,23 @@
             android:inputType="textMultiLine"
             android:layout_marginTop="8dp"/>
 
+
+
+
         <!-- ACTION -->
         <Button
-            android:id="@+id/btnPublish"
-            android:text="Publish Buku"
+            android:id="@+id/btnSaveDraft"
+            android:text="Simpan Draft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/btnPublish"
+            android:text="Publish / Update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 </ScrollView>
