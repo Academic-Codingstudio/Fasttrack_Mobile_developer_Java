@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codingstudio.bookcatalog.R;
@@ -35,7 +34,7 @@ public class SearchFragment extends Fragment {
         etSearch = view.findViewById(R.id.etSearch);
         rvSearch = view.findViewById(R.id.rvSearch);
         int spanCount = 2;
-        int spacing = 8;
+        int spacing = 7;
         boolean includeEdge = true;
 
         rvSearch.setLayoutManager(new GridLayoutManager(getContext(), spanCount));

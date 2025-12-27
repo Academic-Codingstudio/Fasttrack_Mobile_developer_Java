@@ -12,11 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookCatalog">
         <activity
+            android:name=".CreateBookActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".AdminCreateActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".DetailActivity"
             android:exported="false" />
@@ -34,7 +37,7 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
