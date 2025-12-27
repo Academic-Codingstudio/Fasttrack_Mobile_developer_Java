@@ -12,5 +12,5 @@
             android:title="Write"/>
         <item android:id="@+id/notification"
             android:icon="@drawable/ic_launcher_background"
-            android:title="Notif"/>
+            android:title="Favorite"/>
     </menu>

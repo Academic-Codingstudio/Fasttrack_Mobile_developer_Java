@@ -1,10 +1,13 @@
 package com.codingstudio.bookcatalog;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +32,9 @@ public class DashboardActivity extends AppCompatActivity {
 
         TextView tvTitle = header.findViewById(R.id.tvHeaderTitle);
         Button btnAction = header.findViewById(R.id.btnHeaderAction);
-        btnAction.setOnClickListener(v -> {
 
-        });
+        btnAction.setOnClickListener(v -> showLoginDialog());
+
 
 
         rvBest = findViewById(R.id.rvBest);
@@ -41,6 +44,36 @@ public class DashboardActivity extends AppCompatActivity {
         setupRecycler(rvBest);
         setupRecycler(rvRandom);
         setupRecycler(rvEditor);
+    }
+
+
+    private void showLoginDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_login);
+        dialog.setCancelable(true);
+
+        EditText etUsername = dialog.findViewById(R.id.etUsername);
+        EditText etPassword = dialog.findViewById(R.id.etPassword);
+        Button btnLogin = dialog.findViewById(R.id.btnLogin);
+        TextView tvRegister = dialog.findViewById(R.id.tvRegister);
+
+        btnLogin.setOnClickListener(v -> {
+            String username = etUsername.getText().toString();
+            String password = etPassword.getText().toString();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Username dan Password wajib diisi", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        tvRegister.setOnClickListener(v ->
+                startActivity(new Intent(this,RegisterAcivity.class))
+        );
+
+        dialog.show();
     }
 
 
