@@ -1,93 +1,53 @@
 package com.codingstudio.bookcatalog;
 
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.codingstudio.bookcatalog.asset.StoryAdapter;
-
-import java.util.Arrays;
-import java.util.List;
+import com.codingstudio.bookcatalog.viewFregment.HomeFragment;
+import com.codingstudio.bookcatalog.viewFregment.SearchFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DashboardActivity extends AppCompatActivity {
-    RecyclerView rvBest, rvRandom, rvEditor;
+    BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        View header = findViewById(R.id.header);
+        bottomNav = findViewById(R.id.bottomNav);
 
-        TextView tvTitle = header.findViewById(R.id.tvHeaderTitle);
-        Button btnAction = header.findViewById(R.id.btnHeaderAction);
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+            bottomNav.setSelectedItemId(R.id.nav_home);
+        }
 
-        btnAction.setOnClickListener(v -> showLoginDialog());
-
-
-
-        rvBest = findViewById(R.id.rvBest);
-        rvRandom = findViewById(R.id.rvRandom);
-        rvEditor = findViewById(R.id.rvEditor);
-
-        setupRecycler(rvBest);
-        setupRecycler(rvRandom);
-        setupRecycler(rvEditor);
-    }
-
-
-    private void showLoginDialog() {
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_login);
-        dialog.setCancelable(true);
-
-        EditText etUsername = dialog.findViewById(R.id.etUsername);
-        EditText etPassword = dialog.findViewById(R.id.etPassword);
-        Button btnLogin = dialog.findViewById(R.id.btnLogin);
-        TextView tvRegister = dialog.findViewById(R.id.tvRegister);
-
-        btnLogin.setOnClickListener(v -> {
-            String username = etUsername.getText().toString();
-            String password = etPassword.getText().toString();
-
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Username dan Password wajib diisi", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+        bottomNav.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_home) {
+                loadFragment(new HomeFragment());
+                return true;
+            } else if (item.getItemId() == R.id.nav_search) {
+                loadFragment(new SearchFragment());
+                return true;
             }
+            return false;
         });
-
-        tvRegister.setOnClickListener(v ->
-                startActivity(new Intent(this,RegisterAcivity.class))
-        );
-
-        dialog.show();
+    }
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                )
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
-
-    private void setupRecycler(RecyclerView rv) {
-        rv.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        );
-
-        List<Integer> dummyImages = Arrays.asList(
-                R.drawable.ic_launcher_background,
-                R.drawable.ic_launcher_background,
-                R.drawable.ic_launcher_background
-        );
-
-        rv.setAdapter(new StoryAdapter(this, dummyImages));
-    }
 }

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookCatalog">
         <activity
-            android:name=".RegisterAcivity"
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".AdminCreateActivity"
