@@ -11,15 +11,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codingstudio.bookcatalog.CreateBookActivity;
+import com.codingstudio.bookcatalog.DetailActivity;
 import com.codingstudio.bookcatalog.R;
 import com.codingstudio.bookcatalog.asset.WriterStoryAdapter;
-import com.codingstudio.bookcatalog.model.WriterBook;
+import com.codingstudio.bookcatalog.model.BookRepository;
+import com.codingstudio.bookcatalog.model.tipeData.Book;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WriterDashboardFragment extends Fragment {
+
+    RecyclerView rv;
+    FloatingActionButton fab;
 
     public WriterDashboardFragment() {
         super(R.layout.fragment_writer_dashboard);
@@ -28,24 +33,37 @@ public class WriterDashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        RecyclerView rv = view.findViewById(R.id.rvWriterBooks);
-        FloatingActionButton fab = view.findViewById(R.id.fabAddBook);
+        rv = view.findViewById(R.id.rvWriterBooks);
+        fab = view.findViewById(R.id.fabAddBook);
 
         rv.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        // Dummy data (sesuai struktur lama kamu)
-        List<WriterBook> books = new ArrayList<>();
-        books.add(new WriterBook(R.drawable.ic_launcher_background, "Roman", true));
-        books.add(new WriterBook(R.drawable.ic_launcher_background, "Horror", false));
-        books.add(new WriterBook(R.drawable.ic_launcher_background, "Drama", true));
-
-        rv.setAdapter(new WriterStoryAdapter(getContext(), books));
+        loadBooks();
 
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CreateBookActivity.class);
             intent.putExtra(CreateBookActivity.MODE, CreateBookActivity.MODE_CREATE);
             startActivity(intent);
         });
+    }
 
+    private void loadBooks() {
+        List<Book> books = BookRepository.getAll();
+
+        WriterStoryAdapter adapter =
+                new WriterStoryAdapter(getContext(), books, book -> {
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra("BOOK_ID", book.id);
+                    startActivity(intent);
+                });
+
+        rv.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadBooks(); // refresh setelah create / edit
     }
 }

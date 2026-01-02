@@ -13,24 +13,29 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.codingstudio.bookcatalog.model.BookRepository;
+import com.codingstudio.bookcatalog.model.tipeData.Book;
+
 
 public class CreateBookActivity extends AppCompatActivity {
     public static final String MODE = "mode";
     public static final String MODE_CREATE = "create";
     public static final String MODE_EDIT = "edit";
 
-    public static final String STATUS = "status";
     public static final String STATUS_DRAFT = "draft";
     public static final String STATUS_PUBLISHED = "published";
+
 
     ImageView imgCover;
     EditText etTitle, etAuthor, etCategory, etDescription;
     Button btnPickImage, btnSaveDraft, btnPublish;
 
 
+
     boolean isEditMode = false;
     String bookStatus = STATUS_DRAFT;
-
+    String bookId;
+    Uri selectedImageUri;
     static final int REQ_GALLERY = 1;
     static final int REQ_CAMERA = 2;
 
@@ -39,6 +44,13 @@ public class CreateBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_book);
 
+        initView();
+        initMode();
+        initAction();
+
+    }
+    // ================= INIT =================
+    private void initView() {
         imgCover = findViewById(R.id.imgCover);
         etTitle = findViewById(R.id.etTitle);
         etAuthor = findViewById(R.id.etAuthor);
@@ -47,99 +59,122 @@ public class CreateBookActivity extends AppCompatActivity {
         btnPickImage = findViewById(R.id.btnPickImage);
         btnSaveDraft = findViewById(R.id.btnSaveDraft);
         btnPublish = findViewById(R.id.btnPublish);
+    }
+
+    private void initMode() {
         String mode = getIntent().getStringExtra(MODE);
         isEditMode = MODE_EDIT.equals(mode);
-        bookStatus = STATUS_DRAFT;
 
         if (isEditMode) {
             setTitle("Edit Buku");
+            bookId = getIntent().getStringExtra("BOOK_ID");
 
-            // EDIT MODE
             btnSaveDraft.setVisibility(View.GONE);
             btnPublish.setVisibility(View.VISIBLE);
-            btnPublish.setText("Update / Publish");
+            btnPublish.setText("Update Buku");
 
             loadBookData();
         } else {
             setTitle("Buat Buku Baru");
-
-            // CREATE MODE
             btnSaveDraft.setVisibility(View.VISIBLE);
             btnPublish.setVisibility(View.GONE);
         }
-
-
-
+    }
+    private void initAction() {
         btnPickImage.setOnClickListener(v -> showImagePicker());
-        btnPublish.setOnClickListener(v -> publishBook());
-
+        btnSaveDraft.setOnClickListener(v -> saveBook(STATUS_DRAFT));
+        btnPublish.setOnClickListener(v -> saveBook(STATUS_PUBLISHED));
     }
 
+
+    // ================= LOAD =================
     private void loadBookData() {
-        // DUMMY DATA (nanti ganti dari API / DB)
-        etTitle.setText("EDUKASI atau SENSASI?");
-        etAuthor.setText("Anomalee22");
-        etCategory.setText("Roman");
-        etDescription.setText("Keadaan televisi zaman sekarang...");
-        imgCover.setImageResource(R.drawable.ic_launcher_background);
+        Book book = BookRepository.getById(bookId);
+        if (book == null) return;
+
+        etTitle.setText(book.title);
+        etAuthor.setText(book.author);
+        etCategory.setText(book.category);
+        etDescription.setText(book.description);
+
+        if (!book.imageUri.isEmpty()) {
+            selectedImageUri = Uri.parse(book.imageUri);
+            imgCover.setImageURI(selectedImageUri);
+        }
+
+        bookStatus = book.status;
     }
+
 
     private void showImagePicker() {
         String[] options = {"Gallery", "Camera"};
-
         new AlertDialog.Builder(this)
                 .setTitle("Pilih Cover Buku")
-                .setItems(options, (dialog, which) -> {
-                    if (which == 0) openGallery();
+                .setItems(options, (d, i) -> {
+                    if (i == 0) openGallery();
                     else openCamera();
-                })
-                .show();
+                }).show();
     }
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK,
+        Intent i = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQ_GALLERY);
+        startActivityForResult(i, REQ_GALLERY);
     }
 
     private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQ_CAMERA);
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(i, REQ_CAMERA);
     }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int req, int res, Intent data) {
+        super.onActivityResult(req, res, data);
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQ_GALLERY && data != null) {
-                Uri imageUri = data.getData();
-                imgCover.setImageURI(imageUri);
+        if (res == RESULT_OK && data != null) {
+            if (req == REQ_GALLERY) {
+                selectedImageUri = data.getData();
+                imgCover.setImageURI(selectedImageUri);
             }
-            else if (requestCode == REQ_CAMERA && data != null) {
-                imgCover.setImageBitmap((android.graphics.Bitmap) data.getExtras().get("data"));
+            if (req == REQ_CAMERA) {
+                imgCover.setImageBitmap((android.graphics.Bitmap)
+                        data.getExtras().get("data"));
             }
         }
     }
 
-    private void publishBook() {
+    // ================= SAVE =================
+    private void saveBook(String status) {
         if (etTitle.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Judul wajib diisi", Toast.LENGTH_SHORT).show();
+            toast("Judul wajib diisi");
             return;
         }
 
-        if (!isEditMode) {
-            bookStatus = STATUS_DRAFT;
-            Toast.makeText(this, "Draft buku disimpan", Toast.LENGTH_SHORT).show();
+        String id = isEditMode ? bookId :
+                String.valueOf(System.currentTimeMillis());
+
+        Book book = new Book(
+                id,
+                etTitle.getText().toString(),
+                etAuthor.getText().toString(),
+                etCategory.getText().toString(),
+                etDescription.getText().toString(),
+                selectedImageUri != null ? selectedImageUri.toString() : "",
+                status
+        );
+
+        if (isEditMode) {
+            BookRepository.update(book);
+            toast("Buku diperbarui");
         } else {
-            if (bookStatus.equals(STATUS_DRAFT)) {
-                Toast.makeText(this, "Draft buku diperbarui", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Buku berhasil diperbarui", Toast.LENGTH_SHORT).show();
-            }
+            BookRepository.add(book);
+            toast("Buku disimpan sebagai " + status);
         }
 
         finish();
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
 }

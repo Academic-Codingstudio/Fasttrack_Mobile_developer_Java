@@ -1,35 +1,39 @@
 package com.codingstudio.bookcatalog.asset;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codingstudio.bookcatalog.CreateBookActivity;
 import com.codingstudio.bookcatalog.DetailActivity;
 import com.codingstudio.bookcatalog.R;
-import com.codingstudio.bookcatalog.model.WriterBook;
+import com.codingstudio.bookcatalog.model.tipeData.Book;
 
 import java.util.List;
 
 public class WriterStoryAdapter
         extends RecyclerView.Adapter<WriterStoryAdapter.ViewHolder> {
+    public interface OnItemClickListener {
+        void onClick(Book book);
+    }
 
     Context context;
-    List<WriterBook> books;
+    List<Book> books;
+    OnItemClickListener listener;
 
-    public WriterStoryAdapter(Context context, List<WriterBook> books) {
+    public WriterStoryAdapter(Context context,
+                              List<Book> books,
+                              OnItemClickListener listener) {
         this.context = context;
         this.books = books;
+        this.listener = listener;
     }
 
     @NonNull
@@ -42,24 +46,22 @@ public class WriterStoryAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        WriterBook book = books.get(position);
+        Book book = books.get(position);
 
-        holder.imgCover.setImageResource(book.cover);
         holder.txtCategory.setText(
-                book.category + (book.published ? " • Published" : " • Draft")
+                book.category + " • " + book.status.toUpperCase()
         );
 
-        holder.txtCategory.setTextColor(
-                book.published ? 0xFF4CAF50 : 0xFFFF9800
-        );
+        if (book.imagePath != null && !book.imagePath.isEmpty()) {
+            holder.imgCover.setImageURI(Uri.parse(book.imagePath));
+        } else {
+            holder.imgCover.setImageResource(R.drawable.ic_launcher_background);
+        }
 
         holder.itemView.setOnClickListener(v -> {
-
-            Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra("is_writer", true);
-            intent.putExtra("status", book.published ? "published" : "draft");
-
-            context.startActivity(intent);
+            if (listener != null) {
+                listener.onClick(book);
+            }
         });
     }
 
