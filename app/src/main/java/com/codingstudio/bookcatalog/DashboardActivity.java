@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.codingstudio.bookcatalog.model.SessionManagement;
 import com.codingstudio.bookcatalog.viewFregment.HomeFragment;
 import com.codingstudio.bookcatalog.viewFregment.SearchFragment;
 import com.codingstudio.bookcatalog.viewFregment.WriterDashboardFragment;
@@ -15,12 +17,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DashboardActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
+    SessionManagement session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+
+        session = new SessionManagement(this);
         bottomNav = findViewById(R.id.bottomNav);
 
         if (savedInstanceState == null) {
@@ -29,18 +34,32 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         bottomNav.setOnItemSelectedListener(item -> {
+
             if (item.getItemId() == R.id.nav_home) {
                 loadFragment(new HomeFragment());
                 return true;
-            } else if (item.getItemId() == R.id.nav_search) {
+            }
+
+            if (item.getItemId() == R.id.nav_search) {
                 loadFragment(new SearchFragment());
                 return true;
-            } else if (item.getItemId() == R.id.nav_favorite){
-                Toast.makeText(this, "Fiture ini sedang di buat", Toast.LENGTH_SHORT).show();
-            } else if (item.getItemId() == R.id.nav_write){
+            }
+
+            if (item.getItemId() == R.id.nav_favorite) {
+                if (!checkLogin()) return false;
+
+                Toast.makeText(this,
+                        "Fitur Favorite segera hadir",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            if (item.getItemId() == R.id.nav_write) {
+                if (!checkLogin()) return false;
                 loadFragment(new WriterDashboardFragment());
                 return true;
             }
+
             return false;
         });
     }
@@ -55,6 +74,17 @@ public class DashboardActivity extends AppCompatActivity {
                 )
                 .replace(R.id.fragment_container, fragment)
                 .commit();
+    }
+
+    // ================= LOGIN GUARD =================
+    private boolean checkLogin() {
+        if (!session.isLogin()) {
+            Toast.makeText(this,
+                    "Silakan login terlebih dahulu",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
 }

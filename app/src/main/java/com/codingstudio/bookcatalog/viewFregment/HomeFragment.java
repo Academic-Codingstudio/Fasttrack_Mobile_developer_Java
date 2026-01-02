@@ -17,14 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.codingstudio.bookcatalog.R;
 import com.codingstudio.bookcatalog.RegisterActivity;
 import com.codingstudio.bookcatalog.asset.StoryAdapter;
+import com.codingstudio.bookcatalog.model.SessionManagement;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+
+    Button btnAction;
+    TextView tvTitle;
+
     RecyclerView rvBest, rvRandom, rvEditor;
     EditText etUsername, etPassword;
+    SessionManagement session;
+
+
 
     public HomeFragment() {
         super(R.layout.fragment_home);
@@ -33,17 +41,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        session = new SessionManagement(requireContext());
+
         View header = view.findViewById(R.id.header);
 
-        TextView tvTitle = header.findViewById(R.id.tvHeaderTitle);
-        Button btnAction = header.findViewById(R.id.btnHeaderAction);
+        tvTitle = header.findViewById(R.id.tvHeaderTitle);
+        btnAction = header.findViewById(R.id.btnHeaderAction);
 
-
-        // ===== SETTING HOME =====
         tvTitle.setText("Pilihan terbaik untukmu");
 
-        btnAction.setText("Login");
-        btnAction.setOnClickListener(v -> showLoginDialog());
+        updateHeader(); // ⬅️ PENTING
 
         rvBest = view.findViewById(R.id.rvBest);
         rvRandom = view.findViewById(R.id.rvRandom);
@@ -52,8 +59,6 @@ public class HomeFragment extends Fragment {
         setupRecycler(rvBest);
         setupRecycler(rvRandom);
         setupRecycler(rvEditor);
-
-
     }
 
     private void showLoginDialog() {
@@ -92,6 +97,21 @@ public class HomeFragment extends Fragment {
         rv.setAdapter(new StoryAdapter(getContext(), dummyImages));
     }
 
+    private void updateHeader() {
+        if (session.isLogin()) {
+            btnAction.setText("Logout");
+            btnAction.setOnClickListener(v -> doLogout());
+        } else {
+            btnAction.setText("Login");
+            btnAction.setOnClickListener(v -> showLoginDialog());
+        }
+    }
+    private void doLogout() {
+        session.logout(); // clear session
+        toast("Berhasil logout");
+        updateHeader();   // refresh UI
+    }
+
 
     // ================= LOGIN LOGIC =================
     private void doLogin(Dialog dialog) {
@@ -100,12 +120,14 @@ public class HomeFragment extends Fragment {
 
         if (!validateLogin(username, password)) return;
 
-        // === sementara (nanti ganti SQLite / SessionManager)
-        Toast.makeText(getContext(),
-                "Login berhasil",
-                Toast.LENGTH_SHORT).show();
+        if (!session.setLogin(username, password)) {
+            toast("Username atau password salah");
+            return;
+        }
 
+        toast("Login berhasil");
         dialog.dismiss();
+        updateHeader();
     }
 
     // ================= VALIDATION =================
