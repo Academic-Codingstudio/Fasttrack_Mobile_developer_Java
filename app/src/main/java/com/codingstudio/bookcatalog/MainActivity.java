@@ -1,82 +1,35 @@
 package com.codingstudio.bookcatalog;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    // =========================
-    // CREATE
-    // =========================
+    Button btn_oop,btn_main,btn_activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showToast("onCreate() → Activity dibuat");
 
+        btn_oop = findViewById(R.id.btn_oop);
+        btn_main = findViewById(R.id.btn_main);
+        btn_activity = findViewById(R.id.btn_activity);
 
+        btn_oop.setOnClickListener(v -> {
+            startActivity(new Intent(this, OOPActivity.class));
+        });
+        btn_main.setOnClickListener(v -> {
+            startActivity(new Intent(this,DashboardActivity.class));
+            finish();
+        });
+        btn_activity.setOnClickListener(v -> {
+            startActivity(new Intent(this,ToasActivity.class));
+        });
     }
 
-    // =========================
-    // START
-    // =========================
-    @Override
-    protected void onStart() {
-        super.onStart();
-        showToast("onStart() → Activity mulai terlihat");
-    }
 
-    // =========================
-    // RESUME (Foreground)
-    // =========================
-    @Override
-    protected void onResume() {
-        super.onResume();
-        showToast("onResume() → Activity aktif (foreground)");
-    }
-
-    // =========================
-    // PAUSE (Sebentar ke background)
-    // =========================
-    @Override
-    protected void onPause() {
-        super.onPause();
-        showToast("onPause() → Activity dijeda");
-    }
-
-    // =========================
-    // STOP (Background)
-    // =========================
-    @Override
-    protected void onStop() {
-        super.onStop();
-        showToast("onStop() → Activity di background");
-    }
-
-    // =========================
-    // RESTART
-    // =========================
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        showToast("onRestart() → Activity kembali dari background");
-    }
-
-    // =========================
-    // DESTROY (Terminate)
-    // =========================
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        showToast("onDestroy() → Activity dihancurkan");
-    }
 }

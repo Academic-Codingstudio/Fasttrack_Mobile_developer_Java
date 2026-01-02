@@ -12,32 +12,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookCatalog">
         <activity
+            android:name=".ToasActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateBookActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminCreateActivity"
-            android:exported="true" />
-        <activity
             android:name=".DetailActivity"
             android:exported="false" />
         <activity
             android:name=".DashboardActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".OOPActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".OOPActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
     </application>
 
 </manifest>
